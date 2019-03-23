@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}
+Diccionario
+{% endblock %}
+{% block content %}
+<h1>Diccionario Lenguaje de Señas</h1>
+<p>Buscar usuario</p>
+<form method="get" action="{{ url_for('search') }}">
+	<p><input type="text" name="nickname"></p>
+	<input type="submit" value="Buscar">
+</form>
+
+
+<form method="get" action="{{ url_for('search') }}">
+  <p>Buscar palabra</p>
+	<p><input type="text" name="Palabra"></p>
+	<input type="submit" value="Buscar">
+</form>
+{% endblock %}
