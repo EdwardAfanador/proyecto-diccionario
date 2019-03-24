@@ -25,13 +25,13 @@ class Users(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     
-class Palabras(db.Base):
+"""class Palabras(Base):
     id = db.Column(db.Integer, primary_key=True)
     Palabra = db.Column(db.String(100), unique=True, nullable=False)
     images = db.relationship("Image", backref="owner", lazy="dynamic")
     
-class Image(db.Base):
-    filename = db.Column(db.String(80), nullable=False)
+class Image(Base):
+    filename = db.Column(db.String(80), nullable=False)"""
 
 
 @app.before_request
@@ -88,6 +88,8 @@ def signup():
         return redirect(url_for("login"))
 
     return render_template("signup.html")
+
+    
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
