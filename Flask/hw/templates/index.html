@@ -4,16 +4,54 @@ Diccionario
 {% endblock %}
 {% block content %}
 <h1>Diccionario Lenguaje de Señas</h1>
-<p>Buscar usuario</p>
-<form method="get" action="{{ url_for('search') }}">
-	<p><input type="text" name="nickname"></p>
-	<input type="submit" value="Buscar">
-</form>
+<div class="caja">
+	<form method="get" action="{{ url_for('searchp') }}">
+		<p>Buscar palabra</p>
+		<p><input type="text" name="Palabra"></p>
+		<input type="submit" value="Buscar">
+	</form>
+</div>
 
+<div class="container">
+	<div class="header">
+			<nav>
+					<ul class="nav nav-pills pull-right">
+							<li role="presentation" class="active"><a href="#">Home</a>
+							</li>
+							<li role="presentation" class="login"><a href="login">Sign In</a>
+							</li>
+					</ul>
+			</nav>
+			<h4 class="text-muted">Un Diccionario Creado por usuarios </h4>
+			<div class="texto">
+					<p>
+							Debido a las distintas iniciativas desde diferentes asociaciones, profesores especializados y apoyos gubernamentales, 
+							hacia la inclusión educativa, es creciente el número de alumnos integrados con distintas capacidades, y un importante número de ellos, 
+							con disminuciones auditivas, incluidos sordos e hipoacúsicos.
+							Por esta razon hemos decidido aportar y apostar por ofrecer un medio para aprender lenguaje de señas, a manera de un diccionario creado
+							por usuarios y de uso globalizado.
+						</p>
+							
+						<p>
+								¿Por qué aprender Lengua de señas?
+						</p>
+						<p>
+							No hay duda que la comunicación en los seres humanos es necesaria y está implícita en todos los órdenes de la vida, tanto en los seres humanos como en cualquiera de los seres vivos. Es útil desde que nacemos, para alimentarnos, para crecer, aprender, trabajar, y hasta para disfrutar de la compañía de nuestros seres queridos.
+								Por lo tanto teniendo en cuenta que un canal de transmisión es el habla para lo cual es estrictamente necesario emitir sonido y recibir a través del oído, la pregunta es, ¿Cómo hago para comunicarme con una persona sorda?
+								La única opción es un lenguaje gestual y que se recibe con la vista. Dato que no es menor si tenemos en cuenta que también estamos dotados, y de hecho percibimos más del noventa por ciento por los gestos. Percibimos estados de ánimo, si están siendo sinceros o simplemente en repetidas ocasiones nos entendemos sin una palabra. Esto nos da la pauta que no es difícil si lo deseamos comunicarnos con personas que no escuchan y no hablan.
+						 </p>
 
-<form method="get" action="{{ url_for('search') }}">
-  <p>Buscar palabra</p>
-	<p><input type="text" name="Palabra"></p>
-	<input type="submit" value="Buscar">
-</form>
+			</div>
+			
+
+</div>
+
+	<div class="jumbotron">
+			<h2>Quiere formar parte de nuestra comunidad? Unase aqui</h2>
+			<p class="lead"></p>
+			<p><a class="btn btn-lg btn-success" href="signup" role="button">Sign up today</a>
+			</p>
+	</div>
+
+</div>
 {% endblock %}

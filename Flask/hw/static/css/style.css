@@ -1,6 +1,72 @@
+
 .success {
 	color: green;
 }
 .error{
     color:red;
 }
+
+body{
+    font-family:'Courier New', Courier, monospace;
+}
+h1 {
+
+    font-size: 50px;
+    background:turquoise;
+}
+h2 {
+    font-size: 15px;
+}
+h3 {
+    font-size: 25px;
+}
+
+.caja{
+    width: 200px;
+    height: 200px;
+    position: relative;
+    left:900px ;
+}
+
+.active{
+    position: relative;
+    left:1000px ;
+    top: -280px;
+}
+.login{
+    position: relative;
+    left:1060px ;
+    top: -298px;
+}
+
+.jumbotron h2{
+    position: relative;
+    left:900px ;
+    top: -1000px;
+    background:turquoise;
+}
+.jumbotron p {
+    position: relative;
+    left:900px ;
+    top: -980px;
+    
+}
+h4{
+    font-size: 30px;
+    position: relative;
+    left:30px ;
+    top: -280px;
+}
+.footer{
+    position: relative;
+    top: -800px;
+}
+
+.texto{
+    margin: 250px;
+    position: relative;
+    left:-210px ;
+    top: -500px;
+}
+
+

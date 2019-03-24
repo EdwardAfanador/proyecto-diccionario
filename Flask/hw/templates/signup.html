@@ -5,9 +5,11 @@ Registrarse
 {% endblock %}
 {% block content %}
 <h1>Sign Up</h1>
-<form method="post" action="{{ url_for('signup') }}">
-	{{ render_input("username", "Usuario") }}
-	{{ render_input("password", "Contraseña", type="password") }}
-	<input type="submit" value="Aceptar">
-</form>
+<div><form method="post" action="{{ url_for('signup') }}">
+		{{ render_input("username", "Usuario") }}
+		{{ render_input("password", "Contraseña", type="password") }}
+		<input type="submit" value="Aceptar">
+	</form>
+</div>
+
 {% endblock %}

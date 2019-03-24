@@ -52,21 +52,7 @@ def upload_file():
             return redirect(url_for("get_file", filename=filename))
         return "File not allowed."
 
-    return """<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Upload File</title>
-</head>
-<body>
-    <h1>Añadir al Diccionario</h1>
-    <form method="POST" enctype="multipart/form-data">
-        <p><input type="text" name="Palabra"></p>
-	    <input type="file" name="file">
-        <input type="submit" value="Añadir">
-    </form>
-</body>
-</html>"""
+    return render_template("añadir.html")
 
 @app.route("/uploads/<filename>")
 def get_file(filename):
@@ -84,7 +70,14 @@ def before_request():
 @app.route("/")
 def index():
     titulo = "Diccionario Lenguaje de Señas"
-    return render_template("index.html", titulo=titulo,)
+    if "username" in session :
+        print("Bienvenido %s" % escape(session["username"]))
+        return render_template("index.html", titulo=titulo,)
+    else: 
+        flash("Debes loguearte primero.", "error")
+        return render_template("login.html")
+    return "."
+    
 
 '''metodos get y post 
 get: envia datos de forma visible en la url
@@ -104,14 +97,14 @@ def search():
 
 @app.route("/searchp")
 def searchp():
-    palabra = request.args.get("nickname")
+    palabra = request.args.get("Palabra")
 
-    user = Users.query.filter_by(palabra=palabra).first()
+    Palabra = Palabras.query.filter_by(Palabra=palabra).first()
 
-    if user:
-        return user.username
+    if Palabra:
+        return "ojito"
 
-    return "El usuario no Existe."
+    return "La palabra no existe."
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -136,17 +129,14 @@ def login():
 
         if user and check_password_hash(user.password, request.form["password"]):
             session["username"]= user.username
-            return "Has ingresado Correctamente"
+            flash("Has ingresado Correctamente.", "success")
+            return  render_template("añadir.html")
         flash("El usuario o la contraseña son incorrectos verifique e intente de nuevo.", "error")
 
     return render_template("login.html")
 
-@app.route("/home")
-def home():
-    if "username" in session :
-        return "Bienvenido %s" % escape(session["username"])
 
-    return "Debes loguearte primero."
+    
 
 @app.route("/logout")
 def logout():
