@@ -23,9 +23,6 @@ db = SQLAlchemy(app)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
-
-
-
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -35,11 +32,13 @@ class Palabras(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Palabra = db.Column(db.String(100), unique=True, nullable=False)
     filename = db.Column(db.String(80), nullable=False)
+    
 
-@app.route('/Palabras/<Palabra>,<filename>')
-def showpalabras(Palabra,filename):
-    user = Palabras.query.filter_by(Palabra=Palabra,filename=filename).first_or_404()
-    return render_template('show_Palabra.html', user =user)
+
+@app.route('/Palabras/<Palabra>,')
+def showpalabras(Palabra):
+    user = Palabras.query.filter_by(Palabra=Palabra).first_or_404()
+    return render_template('show_Palabra.html', Palabras =user)
 
 @app.route("/añadir", methods=["GET", "POST"])
 def upload_file():
@@ -47,13 +46,15 @@ def upload_file():
         if not "file" in request.files:
             return "No file part in the form."
         f = request.files["file"]
+       
         if f.filename == "":
             return  "no se ha seleccionado ningun archivo."
         if f and allowed_file(f.filename):
             filename = secure_filename(f.filename)
+            newfile= Palabras(Palabra=request.form["Palabra"],filename=f.filename)
             f.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            new_word = Palabras(Palabra=request.form["Palabra"],filename=filename)
-            db.session.add(new_word)
+            
+            db.session.add(newfile)
             db.session.commit()
             return redirect(url_for("get_file", filename=filename))
         return "File not allowed."
@@ -90,14 +91,16 @@ post: envia datos de manera que estos no son visibles para el usuario
 '''
 @app.route("/searchp")
 def searchp():
-    palabra = request.args.get("nickname")
-
-    user = Users.query.filter_by(palabra=palabra).first()
-
+    
+    palabra = request.args.get("Palabra")
+    user = Palabras.query.filter_by(Palabra=palabra).first()
+    
+    
     if user:
-        return user.username
+        
+        return user.Palabra 
 
-    return "El usuario no Existe."
+    return "la palabra no existe."
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
