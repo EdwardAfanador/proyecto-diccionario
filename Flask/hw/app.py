@@ -35,7 +35,7 @@ class Palabras(db.Model):
     Palabra = db.Column(db.String(100), unique=True, nullable=False)
     filename = db.Column(db.String(80), nullable=False)
 
-@app.route("/upload", methods=["GET", "POST"])
+@app.route("/añadir", methods=["GET", "POST"])
 def upload_file():
     if request.method == "POST":
         if not "file" in request.files:
@@ -77,34 +77,21 @@ def index():
         flash("Debes loguearte primero.", "error")
         return render_template("login.html")
     return "."
-    
 
 '''metodos get y post 
 get: envia datos de forma visible en la url
 post: envia datos de manera que estos no son visibles para el usuario 
 '''
+@app.route("/searchp")
+def searchp():
+    palabra = request.args.get("nickname")
 
-@app.route("/search")
-def search():
-    nickname = request.args.get("nickname")
-
-    user = Users.query.filter_by(username=nickname).first()
+    user = Users.query.filter_by(palabra=palabra).first()
 
     if user:
         return user.username
 
     return "El usuario no Existe."
-
-@app.route("/searchp")
-def searchp():
-    palabra = request.args.get("Palabra")
-
-    Palabra = Palabras.query.filter_by(Palabra=palabra).first()
-
-    if Palabra:
-        return "ojito"
-
-    return "La palabra no existe."
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -129,14 +116,17 @@ def login():
 
         if user and check_password_hash(user.password, request.form["password"]):
             session["username"]= user.username
-            flash("Has ingresado Correctamente.", "success")
-            return  render_template("añadir.html")
+            return redirect(url_for("upload_file"))
         flash("El usuario o la contraseña son incorrectos verifique e intente de nuevo.", "error")
 
     return render_template("login.html")
 
+@app.route("/home")
+def home():
+    if "username" in session :
+        return "Bienvenido %s" % escape(session["username"])
 
-    
+    return "Debes loguearte primero."
 
 @app.route("/logout")
 def logout():
@@ -150,5 +140,3 @@ app.secret_key = "12345"
 if __name__ == "__main__":
     db.create_all()
     app.run(debug=True)
-
-   

@@ -24,49 +24,59 @@ h3 {
 .caja{
     width: 200px;
     height: 200px;
-    position: relative;
+    position: absolute;
     left:900px ;
 }
 
 .active{
-    position: relative;
+    position: absolute;
     left:1000px ;
-    top: -280px;
+    top: 60px;
 }
 .login{
-    position: relative;
+    position: absolute;
     left:1060px ;
-    top: -298px;
+    top: 60px;
 }
 
 .jumbotron h2{
-    position: relative;
+    width: 400px;
+    height: 40px;
+    position: absolute;
     left:900px ;
-    top: -1000px;
+    top: 300px;
     background:turquoise;
 }
 .jumbotron p {
-    position: relative;
+    position: absolute;
     left:900px ;
-    top: -980px;
+    top: 350px;
     
 }
 h4{
     font-size: 30px;
-    position: relative;
-    left:30px ;
-    top: -280px;
+    position: absolute;
+    top: 100px;
 }
 .footer{
-    position: relative;
-    top: -800px;
+   
+    position: absolute;
+    top: 610px;
 }
 
 .texto{
-    margin: 250px;
-    position: relative;
-    left:-210px ;
-    top: -500px;
+    width: 800px;
+    height: 500px;
+    position: absolute;
+    top: 190px;
 }
 
+.jumbo{
+    width: 350px;
+    height: 20px;
+    background:turquoise;
+}
 
+.sign{
+    background:turquoise;
+}
