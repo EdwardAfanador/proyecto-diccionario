@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 import os
 ''' las librerias redirect y url_for son para redirigir de una pagina a otra'''
 '''flash es para los mensajs y notificaciones despues de una accion'''
@@ -34,6 +35,11 @@ class Palabras(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Palabra = db.Column(db.String(100), unique=True, nullable=False)
     filename = db.Column(db.String(80), nullable=False)
+
+@app.route('/Palabras/<Palabra>,<filename>')
+def showpalabras(Palabra,filename):
+    user = Palabras.query.filter_by(Palabra=Palabra,filename=filename).first_or_404()
+    return render_template('show_Palabra.html', user =user)
 
 @app.route("/añadir", methods=["GET", "POST"])
 def upload_file():
