@@ -89,12 +89,10 @@ def searchp():
     
     palabra = request.args.get("Palabra")
     user = Palabras.query.filter_by(Palabra=palabra).first()
-    filename= user.filename
 
-    print(filename)
     
     if user:
-        return  render_template("images.html", filename=filename)
+        return  render_template("images.html", filename=user.filename)
 
     return "la palabra no existe."
 
@@ -130,7 +128,6 @@ def login():
 def home():
     if "username" in session :
         return "Bienvenido %s" % escape(session["username"])
-
     return "Debes loguearte primero."""
 
 @app.route("/logout")
