@@ -35,10 +35,6 @@ class Palabras(db.Model):
     
 
 
-@app.route('/Palabras/<Palabra>,')
-def showpalabras(Palabra):
-    user = Palabras.query.filter_by(Palabra=Palabra).first_or_404()
-    return render_template('show_Palabra.html', Palabras =user)
 
 @app.route("/añadir", methods=["GET", "POST"])
 def upload_file():
@@ -72,8 +68,6 @@ def before_request():
     else:
         g.user = None
     
-
-
 @app.route("/")
 def index():
     titulo = "Diccionario Lenguaje de Señas"
@@ -89,8 +83,6 @@ def searchp():
     
     palabra = request.args.get("Palabra")
     user = Palabras.query.filter_by(Palabra=palabra).first()
-
-    
     if user:
         return  render_template("images.html", filename=user.filename,Palabra=palabra)
 
@@ -109,8 +101,6 @@ def signup():
         return redirect(url_for("login"))
 
     return render_template("signup.html")
-
-    
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
