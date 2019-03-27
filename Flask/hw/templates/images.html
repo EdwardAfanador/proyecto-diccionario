@@ -55,38 +55,11 @@
         </div>
     </nav>
 </head>
-
 <body>
     <br>
     <br>
     <br>
     <br>
-    <br>
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-              
-            </div>
-            <div class="col-sm-6">
-                <br><br>
-                    <div>
-                            <h1>Añadir al Diccionario</h1>
-                            <form method="POST" enctype="multipart/form-data">
-                                <p><input type="text" name="Palabra"></p>
-                                <input type="file" name="file">
-                                <input type="submit" value="Añadir">
-                            </form>
-                        </div>
-            </div>
-            <div class="col-sm-2">
-              
-            </div>
-        </div>
-    </div>
-
-    
+    <img src="{{url_for('static',filename=filename)}}"/>
 </body>
-
 </html>

@@ -9,7 +9,7 @@ import os
 '''flash es para los mensajs y notificaciones despues de una accion'''
 dbdir = "sqlite:///" + os.path.abspath(os.getcwd()) + "/database.db"
 
-UPLOAD_FOLDER = os.path.abspath("./uploads/")
+UPLOAD_FOLDER = os.path.abspath("static/uploads/")
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpge"])
 def allowed_file(filename):
 
@@ -23,6 +23,9 @@ db = SQLAlchemy(app)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
+
+
+
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -32,13 +35,11 @@ class Palabras(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Palabra = db.Column(db.String(100), unique=True, nullable=False)
     filename = db.Column(db.String(80), nullable=False)
-    
 
-
-@app.route('/Palabras/<Palabra>,')
-def showpalabras(Palabra):
-    user = Palabras.query.filter_by(Palabra=Palabra).first_or_404()
-    return render_template('show_Palabra.html', Palabras =user)
+@app.route('/Palabras/<Palabra>,<filename>')
+def showpalabras(Palabra,filename):
+    user = Palabras.query.filter_by(Palabra=Palabra,filename=filename).first_or_404()
+    return render_template('show_Palabra.html', user =user)
 
 @app.route("/añadir", methods=["GET", "POST"])
 def upload_file():
@@ -48,15 +49,15 @@ def upload_file():
         f = request.files["file"]
        
         if f.filename == "":
-            return  "no se ha seleccionado ningun archivo."
+            return  "No se ha seleccionado ningun archivo."
         if f and allowed_file(f.filename):
             filename = secure_filename(f.filename)
-            newfile= Palabras(Palabra=request.form["Palabra"],filename=f.filename)
-            f.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            newfile= Palabras(Palabra=request.form["Palabra"],filename="uploads/" + f.filename)
+            f.save(os.path.join(app.config["UPLOAD_FOLDER"], filename)) 
             
             db.session.add(newfile)
             db.session.commit()
-            return redirect(url_for("get_file", filename=filename))
+            return render_template("index.html")
         return "File not allowed."
 
     return render_template("añadir.html")
@@ -74,16 +75,10 @@ def before_request():
     
 
 
-@app.route("/")
-def index():
+@app.route("/home")
+def home():
     titulo = "Diccionario Lenguaje de Señas"
-    if "username" in session :
-        print("Bienvenido %s" % escape(session["username"]))
-        return render_template("index.html", titulo=titulo,)
-    else: 
-        flash("Debes loguearte primero.", "error")
-        return render_template("login.html")
-    return "."
+    return render_template("index.html", titulo=titulo,)
 
 '''metodos get y post 
 get: envia datos de forma visible en la url
@@ -94,11 +89,12 @@ def searchp():
     
     palabra = request.args.get("Palabra")
     user = Palabras.query.filter_by(Palabra=palabra).first()
-    
+    filename= user.filename
+
+    print(filename)
     
     if user:
-        
-        return user.Palabra 
+        return  render_template("images.html", filename=filename)
 
     return "la palabra no existe."
 
@@ -130,12 +126,12 @@ def login():
 
     return render_template("login.html")
 
-@app.route("/home")
+"""@app.route("/home")
 def home():
     if "username" in session :
         return "Bienvenido %s" % escape(session["username"])
 
-    return "Debes loguearte primero."
+    return "Debes loguearte primero."""
 
 @app.route("/logout")
 def logout():
@@ -148,4 +144,4 @@ app.secret_key = "12345"
 
 if __name__ == "__main__":
     db.create_all()
-    app.run(debug=True)
+app.run(debug=True)
