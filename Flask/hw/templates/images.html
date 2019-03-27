@@ -48,7 +48,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item mx-0 mx-lg-1">
-                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/">Home</a>
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/">Volver a inicio</a>
                     </li>
                 </ul>
             </div>
@@ -64,11 +64,15 @@
     <br>
     <div>
         <center>
-                <img src="{{url_for('static',filename=filename)}}"/>
-                
+                <img src="{{url_for('static',filename=filename)}}"/>      
         </center>
-            
-      
+    </div>
+    <div>
+        <center>
+                <h1>
+                    {{Palabra}}
+                </h1>    
+        </center>
     </div>
     
 </body>

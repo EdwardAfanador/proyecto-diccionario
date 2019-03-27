@@ -51,12 +51,12 @@ def upload_file():
             return  "no se ha seleccionado ningun archivo."
         if f and allowed_file(f.filename):
             filename = secure_filename(f.filename)
-            newfile= Palabras(Palabra=request.form["Palabra"],filename=f.filename)
+            newfile= Palabras(Palabra=request.form["Palabra"],filename="uploads/"+f.filename)
             f.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             
             db.session.add(newfile)
             db.session.commit()
-            return redirect(url_for("get_file", filename=filename))
+            return render_template("index.html")
         return "File not allowed."
 
     return render_template("añadir.html")
@@ -92,7 +92,7 @@ def searchp():
 
     
     if user:
-        return  render_template("images.html", filename=user.filename)
+        return  render_template("images.html", filename=user.filename,Palabra=palabra)
 
     return "la palabra no existe."
 
