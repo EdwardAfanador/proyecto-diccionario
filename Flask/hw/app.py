@@ -85,8 +85,8 @@ def searchp():
     user = Palabras.query.filter_by(Palabra=palabra).first()
     if user:
         return  render_template("images.html", filename=user.filename,Palabra=palabra)
-
-    return "la palabra no existe."
+    flash("No se pudo encontrar la palabra.", "error")
+    return render_template("añadir.html")
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
