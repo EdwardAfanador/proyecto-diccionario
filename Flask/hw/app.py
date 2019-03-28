@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
+import logging
 import os
 ''' las librerias redirect y url_for son para redirigir de una pagina a otra'''
 '''flash es para los mensajs y notificaciones despues de una accion'''
@@ -33,27 +33,32 @@ class Palabras(db.Model):
     Palabra = db.Column(db.String(100), unique=True, nullable=False)
     filename = db.Column(db.String(80), nullable=False)
     
-
-
-
 @app.route("/añadir", methods=["GET", "POST"])
 def upload_file():
     if request.method == "POST":
         if not "file" in request.files:
+            logging.error("no selecciono ningun archivo")
             return "No file part in the form."
         f = request.files["file"]
        
         if f.filename == "":
+            logging.info("No selecciono una monda")
             return  "no se ha seleccionado ningun archivo."
-        if f and allowed_file(f.filename):
-            filename = secure_filename(f.filename)
-            newfile= Palabras(Palabra=request.form["Palabra"],filename="uploads/"+f.filename)
-            f.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        try:
+            if f and allowed_file(f.filename):
+                filename = secure_filename(f.filename)
+                newfile= Palabras(Palabra=request.form["Palabra"],filename="uploads/"+f.filename)
+                f.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             
-            db.session.add(newfile)
-            db.session.commit()
-            return render_template("index.html")
-        return "File not allowed."
+                db.session.add(newfile)
+                db.session.commit()
+                return render_template("index.html")
+            
+        except :
+            print("c murio")
+        
+        logging.info("no se encontro una monda")
+        return "archivo no encontrado."
 
     return render_template("añadir.html")
 
@@ -73,7 +78,6 @@ def index():
     titulo = "Diccionario Lenguaje de Señas"
     return render_template("index.html", titulo=titulo,)
     
-
 '''metodos get y post 
 get: envia datos de forma visible en la url
 post: envia datos de manera que estos no son visibles para el usuario 
@@ -85,7 +89,7 @@ def searchp():
     user = Palabras.query.filter_by(Palabra=palabra).first()
     if user:
         return  render_template("images.html", filename=user.filename,Palabra=palabra)
-    flash("No se pudo encontrar la palabra.", "error")
+    logging.warning("no se encontro una monda")
     return render_template("añadir.html")
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -97,6 +101,7 @@ def signup():
         db.session.commit()
 
         flash("Te has registrado satisfactoriamente.", "success")
+        logging.info("se registro satisfactoriamente")
 
         return redirect(url_for("login"))
 
@@ -111,6 +116,7 @@ def login():
             session["username"]= user.username
             return redirect(url_for("upload_file"))
         flash("El usuario o la contraseña son incorrectos verifique e intente de nuevo.", "error")
+        logging.error("Horrible, mire a ver si no se acuerda del usuario y la contraseña")
 
     return render_template("login.html")
 
@@ -118,7 +124,6 @@ def login():
 @app.route("/logout")
 def logout():
     session.pop("username", None)
-
     return render_template("index.html")
 
 app.secret_key = "12345"
